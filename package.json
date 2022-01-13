@@ -1,0 +1,46 @@
+{
+  "name": "double-vue",
+  "version": "1.0.0",
+  "description": "The vue part of double",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sopamo/double-vue.git"
+  },
+  "keywords": [
+    "double",
+    "vue",
+    "laravel",
+    "api",
+    "vite",
+    "nuxt"
+  ],
+  "author": "Paul Mohr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sopamo/double-vue/issues"
+  },
+  "homepage": "https://github.com/Sopamo/double-vue#readme",
+  "dependencies": {
+    "vue-demi": "^0.12.1"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "vue": "^2.0.0 || >=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "parcel": "^2.2.0",
+    "vue": "^3.0.0"
+  }
+}

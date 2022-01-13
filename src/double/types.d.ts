@@ -1,0 +1,1 @@
+type doubleTypes = Record<string, unknown>
