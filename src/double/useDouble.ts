@@ -1,8 +1,6 @@
 import {reactive, ref, watch} from "vue-demi"
 
-// TODO: add own implementation
-import { deepUnref } from './deepUnref'
-import { componentMap } from "./componentMap";
+import { apiMap } from "./apiMap";
 import { callAction, loadData } from "./api";
 
 export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}): Promise<doubleTypes[Path]> {
@@ -14,7 +12,7 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     }
     let data = {} as any
 
-    componentMap[path].getters.forEach(entry => {
+    apiMap[path].getters.forEach(entry => {
         data[entry] = ref(null)
     })
     const setData = (newData) => {

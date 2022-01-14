@@ -28,6 +28,8 @@
   },
   "homepage": "https://github.com/Sopamo/double-vue#readme",
   "dependencies": {
+    "@nuxt/kit": "^0.8.1-edge",
+    "php-parser": "^3.0.3",
     "vue-demi": "^0.12.1"
   },
   "peerDependencies": {
@@ -40,7 +42,10 @@
     }
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^2.0.1",
     "parcel": "^2.2.0",
+    "unplugin": "^0.3.0",
+    "vite": "^2.7.11",
     "vue": "^3.0.0"
   }
 }

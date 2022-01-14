@@ -1,7 +1,7 @@
 import { setBackendPath } from "./api"
-import { setComponentMap } from "./componentMap"
+import { setApiMap } from "./apiMap"
 
-export const installDouble = (componentMap, backendPath) => {
-    setComponentMap(componentMap)
+export const installDouble = (apiMap, backendPath) => {
+    setApiMap(apiMap)
     setBackendPath(backendPath)
 }
