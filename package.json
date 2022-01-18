@@ -1,14 +1,12 @@
 {
   "name": "double-vue",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "description": "The vue part of double",
-  "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build"
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts"
   },
-  "source": "src/index.ts",
-  "main": "dist/main.js",
-  "module": "dist/module.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sopamo/double-vue.git"
@@ -28,22 +26,27 @@
   },
   "homepage": "https://github.com/Sopamo/double-vue#readme",
   "dependencies": {
-    "@nuxt/kit": "^0.8.1-edge",
+    "@vitejs/plugin-vue": "^2.0.1",
     "php-parser": "^3.0.3",
     "vue-demi": "^0.12.1"
   },
   "peerDependencies": {
+    "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
     "@vue/composition-api": "^1.0.0-rc.1",
     "vue": "^2.0.0 || >=3.0.0"
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
       "optional": true
+    },
+    "@nuxt/kit-edge": {
+      "optional": true
     }
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.1",
+    "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
     "parcel": "^2.2.0",
+    "unbuild": "^0.6.7",
     "unplugin": "^0.3.0",
     "vite": "^2.7.11",
     "vue": "^3.0.0"

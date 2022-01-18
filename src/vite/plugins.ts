@@ -10,7 +10,10 @@ import { updateApiMap } from "./transform/apiMap";
 import { updateTypescriptDefinition } from "./transform/typescriptUpdater";
 
 const vuePluginInstance = vuePlugin({})
-const veemixBasePath = __dirname
+
+// TODO: Make this configurable
+const doubleBasePath = process.cwd()
+
 const fs = require('fs');
 const engine = require('php-parser');
 
@@ -46,7 +49,7 @@ export const doubleVuePlugin = (): VitePlugin => {
         async transform(src, id, options) {
             if (fileRegex.test(id)) {
                 // TODO: Properly replace this only in the beginning of the path:
-                const doublePath = id.replace(veemixBasePath, '').replace(fileRegex, '')
+                const doublePath = id.replace(doubleBasePath, '').replace(fileRegex, '')
 
                 // fs.writeFileSync('./types/veemix.d.ts', getTypescriptDefinition(src, doublePath))
                 updateTypescriptDefinition(src, doublePath)
@@ -69,7 +72,7 @@ export const doubleTSPlugin = (): VitePlugin => {
         name: 'transform-ts-php',
         async transform(src, id, options) {
             if (tsFileRegex.test(id)) {
-                const doublePath = id.replace(veemixBasePath, '').replace(tsFileRegex, '')
+                const doublePath = id.replace(doubleBasePath, '').replace(tsFileRegex, '')
 
                 updateTypescriptDefinition(src, doublePath)
                 updateApiMap(src, doublePath)
