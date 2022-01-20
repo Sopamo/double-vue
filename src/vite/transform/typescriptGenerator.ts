@@ -18,11 +18,7 @@ export const getTypescriptDefinition = (src: string, id: string) => {
 
     const actions = metaData.actions.map(entry => {
         return `
-${entry.name}: {
-    exception: string|null
-    headers: Record<string, string>
-    original: Record<string, any>
-}
+${entry.name}: (options?: Record<string, any>) => Promise<unknown>
 `
     })
 
@@ -32,16 +28,10 @@ ${entry.name}: {
 
 
     const tsDefinition = `
-type ${tsID}PostTypes = {
-  ${actions.join("\n  ")}
-}
-type ${tsID}LoadingTypes = {
-  ${isLoading.join("\n  ")}
-}
 type ${tsID}MainType = {
-  ${getters.join("\n  ")}
-  isLoading: ${tsID}LoadingTypes
-  post: <MethodName extends keyof ${tsID}PostTypes>(methodName: MethodName, data: Record<string, any>) => Promise<${tsID}PostTypes[MethodName]>
+  state: { ${getters.join("\n  ")} }
+  actions: { ${actions.join("\n  ")} }
+  isLoading: { ${isLoading.join("\n  ")} }
 }
 `
     return {

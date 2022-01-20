@@ -17,6 +17,7 @@ function treeToReturnTS(tree: Expression): string {
 
     if (tree.kind === 'array') {
         const arrayLike = tree as Array
+        // @ts-ignore this is a wrong type coming from php-parser
         const children = arrayLike.items.map(item => treeToReturnTS(item))
         // TODO: This might not work for all array definitions
         if (!arrayLike.items[0].hasOwnProperty('key')) {

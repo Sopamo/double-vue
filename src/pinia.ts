@@ -1,0 +1,1 @@
+export { injectDouble } from "./pinia/injectDouble"

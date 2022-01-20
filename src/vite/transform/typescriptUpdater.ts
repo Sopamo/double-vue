@@ -3,7 +3,7 @@ import { getTypescriptDefinition } from "./typescriptGenerator"
 const fs = require('fs')
 
 export const updateTypescriptDefinition = (src: string, doublePath: string) => {
-    const typesPath = './types/veemix.d.ts'
+    const typesPath = './types/double.d.ts'
     const {tsDefinition, tsID} = getTypescriptDefinition(src, doublePath)
     let existingTypes = ''
     if(fs.existsSync(typesPath)) {

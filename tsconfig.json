@@ -3,9 +3,13 @@
       "target": "ESNext",
       "module": "ESNext",
       "moduleResolution": "Node",
+      "isolatedModules": true,
       "types": [
         "node"
       ],
     },
-    "include": ["src/server.ts","src/index.ts"]
+    "include": [
+      "src/**/*",
+      "dev-types.d.ts"
+    ]
   }

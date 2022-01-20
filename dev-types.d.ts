@@ -1,0 +1,1 @@
+export type doubleTypes = Record<string, { state: unknown, actions: unknown }>

@@ -1,5 +1,5 @@
+import { doubleTypes } from "../../dev-types"
 import { deepUnref } from "./deepUnref"
-
 // This is the HTTP path pointing to the root double API in the laravel project
 // Usually this should be https://{yourdomain}.com/double
 let backendPath = ''

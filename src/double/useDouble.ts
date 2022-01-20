@@ -2,6 +2,7 @@ import {reactive, ref, watch} from "vue-demi"
 
 import { apiMap } from "./apiMap";
 import { callAction, loadData } from "./api";
+import { doubleTypes } from "../../dev-types";
 
 export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}): Promise<doubleTypes[Path]> {
     // To be able to watch the config it has to be a ref
