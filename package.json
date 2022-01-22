@@ -4,7 +4,7 @@
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
-    "build": "parcel build"
+    "build": "parcel build && node ./postBuildCleanup.js"
   },
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
@@ -16,6 +16,7 @@
   "files": [
     "src/**/*",
     "dist/index.d.ts",
+    "dist/index.d.ts.map",
     "tsconfig.json"
   ],
   "repository": {
@@ -63,7 +64,7 @@
     "pinia": "^2.0.9",
     "typescript": "^4.5.4",
     "unbuild": "^0.6.7",
-    "unplugin": "^0.3.0",
+    "unplugin": "^0.3.1",
     "vite": "^2.7.11",
     "vue": "^3.0.0"
   }

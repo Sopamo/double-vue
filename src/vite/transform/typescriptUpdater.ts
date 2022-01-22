@@ -10,7 +10,7 @@ export const updateTypescriptDefinition = (src: string, doublePath: string) => {
         existingTypes = fs.readFileSync(typesPath).toString()
     }
     const beginIndicator = '// BEGIN: ' + escapeRegex(doublePath) + '\n'
-    const endIndicator = '// END: ' + escapeRegex(doublePath) + '\n'
+    const endIndicator = '// END: ' + escapeRegex(doublePath) + '\n\n'
     let newTypes = existingTypes.replace(new RegExp(beginIndicator + '[\\s\\S]*' + endIndicator), '')
     newTypes += beginIndicator + tsDefinition + endIndicator
 

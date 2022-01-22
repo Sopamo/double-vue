@@ -13,25 +13,25 @@ export const getTypescriptDefinition = (src: string, id: string) => {
         .join('')
 
     const getters = metaData.getters.map(entry => {
-        return `  ${entry.name}: ${entry.return}`
+        return `\n    ${entry.name}: ${entry.return}`
     })
 
     const actions = metaData.actions.map(entry => {
-        return `
-${entry.name}: (options?: Record<string, any>) => Promise<unknown>
-`
+        return `\n    ${entry.name}: (options?: Record<string, any>) => Promise<unknown>`
     })
 
     const isLoading = metaData.actions.map(entry => {
-        return `  ${entry.name}?: boolean`
+        return `\n    ${entry.name}?: boolean`
     })
 
 
-    const tsDefinition = `
-type ${tsID}MainType = {
-  state: { ${getters.join("\n  ")} }
-  actions: { ${actions.join("\n  ")} }
-  isLoading: { ${isLoading.join("\n  ")} }
+    const tsDefinition = `type ${tsID}MainType = {
+  state: { ${getters.join("")}
+  }
+  actions: { ${actions.join("")}
+  }
+  isLoading: { ${isLoading.join("")}
+  }
 }
 `
     return {

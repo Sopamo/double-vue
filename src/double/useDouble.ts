@@ -13,6 +13,9 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     }
     let data = {} as any
 
+    if(!apiMap[path]) {
+        console.error(`Could not fetch api map for ${path}. Try restarting your dev server.`)
+    }
     apiMap[path].getters.forEach(entry => {
         data[entry] = ref(null)
     })

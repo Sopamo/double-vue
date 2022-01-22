@@ -1,8 +1,7 @@
 import {VitePlugin} from "unplugin";
 
 const fileRegex = /\.vue/
-const phpFileRegex = /\.php/
-const tsFileRegex = /\.ts\.php/
+const tsFileRegex = /\.ts/
 import vuePlugin from "@vitejs/plugin-vue";
 import {ConfigEnv, HmrContext, ModuleNode, UserConfig} from "vite";
 import {CustomPluginOptions, ResolveIdResult} from "rollup";
@@ -74,28 +73,31 @@ export const doubleVuePlugin = (): VitePlugin => {
     }
 }
 
+import { createUnplugin } from 'unplugin'
 
+export const unplugin = createUnplugin(() => {
+  return {
+    name: 'my-first-unplugin',
+    // webpack's id filter is outside of loader logic,
+    // an additional hook is needed for better perf on webpack
+    transformInclude (id) {
+      if(tsFileRegex.test(id)) {
+        const phpFilePath = id.replace(tsFileRegex, '.php').replace(/\?.+/, '')
+        if(fs.existsSync(phpFilePath)) {
+            const phpSrc = fs.readFileSync(phpFilePath).toString()
+            const doublePath = phpFilePath.replace(doubleBasePath, '').replace('.php', '')
+            updateTypescriptDefinition(phpSrc, doublePath)
+            updateApiMap(phpSrc, doublePath)
+        }
+      }
+      return null
+    },
+    transform() {
+        return null
+    }
+  }
+})
 
 export const doubleTSPlugin = (): VitePlugin => {
-    return {
-        enforce: 'pre',
-        name: 'transform-ts-php',
-        async transform(src, id, options) {
-            if (tsFileRegex.test(id)) {
-                const doublePath = id.replace(doubleBasePath, '').replace(tsFileRegex, '')
-
-                updateTypescriptDefinition(src, doublePath)
-                updateApiMap(src, doublePath)
-
-                src = removePHP(src)
-
-                // TODO: Remove script blocks properly
-                src = src.replace('<script lang="ts">', '')
-                src = src.replace('</script>', '')
-                return {
-                    code: src
-                }
-            }
-        }
-    }
+    return unplugin.vite()
 }

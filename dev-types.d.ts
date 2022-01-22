@@ -1,1 +1,1 @@
-export type doubleTypes = Record<string, { state: unknown, actions: unknown }>
+export type doubleTypes = Record<string, { state: unknown, actions: unknown, isLoading: unknown }>

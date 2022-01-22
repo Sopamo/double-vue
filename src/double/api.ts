@@ -14,7 +14,7 @@ export const setBackendPath = (path: string) => {
     backendPath = path
 }
 
-export const loadData = async <Path extends keyof doubleTypes>(path: Path, config: Record<string, unknown>) => {
+export const loadData = async <Path extends keyof doubleTypes>(path: Path, config: Record<string, unknown> = {}) => {
     assureBackendPath()
     const res = await fetch(`${backendPath}/data?path=${encodeURIComponent(path)}`, {
         method: 'POST',

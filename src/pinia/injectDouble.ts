@@ -3,6 +3,7 @@ import {apiMap} from "../double/apiMap";
 import type {_GettersTree, DefineStoreOptions, StateTree} from "pinia";
 import { doubleTypes } from "../../dev-types";
 import { deepUnref } from "../double/deepUnref";
+import { callAction, loadData } from "../double/api";
 
 export function injectDouble<
         Path extends keyof doubleTypes,
@@ -17,14 +18,26 @@ export function injectDouble<
             Getters,
             Actions & { refresh: () => Promise<void>} & doubleTypes[Path]['actions']
         >, 'id'> {
+
     const originalState = options.state
 
     // Todo: This might not be the best idea, as options.state is a function which returns a unique state object and all of those
     // state objects will use the same `double` store
-    const double = useDouble(path)
 
     // @ts-ignore
     options.state = () => {
+        const double = useDouble(path)
+        // @ts-ignore
+        if(options.actions.refresh === undefined) {
+            // @ts-ignore
+            options.actions.refresh = function() {
+                double.refresh()
+            }
+        }
+
+        Object.entries(double.actions).forEach(([k, v]) => {
+            options.actions[k] = v
+        })
         let state = {}
         if(originalState) {
             state = originalState()
@@ -40,40 +53,22 @@ export function injectDouble<
     }
 
     // @ts-ignore
-    if(options.actions.refresh === undefined) {
-        // @ts-ignore
-        options.actions.refresh = function() {
-            double.refresh()
-        }
-    }
-
-    Object.entries(double.actions).forEach(([k, v]) => {
-        options.actions[k] = v
-    })
-
-    // @ts-ignore
     return options
 }
 
-export function useDouble<Path extends keyof doubleTypes>(path: Path): {state: doubleTypes[Path], refresh: () => Promise<void>, actions: object} {
-    const loadInitialVeemixData = async () => {
-        const res = await fetch('http://localhost/double/data?path=' + encodeURIComponent(path), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify([]),
-        })
-        return await res.json()
-    }
+export function useDouble<Path extends keyof doubleTypes>(path: Path): {state: doubleTypes[Path]['state'], refresh: () => Promise<void>, actions: object} {
+    
     let state = {
         isLoading: reactive<Record<string, boolean>>({}),
+    }
+    if(!apiMap[path]) {
+        console.error(`Could not fetch api map for ${path}. Try restarting your dev server.`)
     }
     apiMap[path].getters.forEach(entry => {
         state[entry] = ref(null)
     })
     const refresh = () => {
-        return loadInitialVeemixData()
+        return loadData(path)
             .then(server => {
                 Object.entries(server).forEach(([key, value]) => {
                     state[key].value = value
@@ -92,14 +87,7 @@ export function useDouble<Path extends keyof doubleTypes>(path: Path): {state: d
             state.isLoading[method] = true
             let result = null
             try {
-                const response = await fetch('http://localhost/double/action?path=' + encodeURIComponent(path) + '&method=' + encodeURIComponent(method), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(deepUnref(data))
-                })
-                result = await response.json()
+                result = await callAction(path, method, data)
                 state.isLoading[method] = false
             } catch (e) {
                 state.isLoading[method] = false
