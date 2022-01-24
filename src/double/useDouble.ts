@@ -1,13 +1,19 @@
-import {reactive, ref, watch} from "vue-demi"
+import {reactive, ref, watch, isRef } from "vue-demi"
 
 import { apiMap } from "./apiMap";
 import { callAction, loadData } from "./api";
 import { doubleTypes } from "../../dev-types";
 
-export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}): Promise<doubleTypes[Path]> {
+export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}):
+    Promise<
+        doubleTypes[Path]['state'] &
+        doubleTypes[Path]['actions'] &
+        { isLoading: doubleTypes[Path]['isLoading'] }
+    > {
     // To be able to watch the config it has to be a ref
-    // Even though we don't really need it to be one
-    config = ref(config)
+    if(!isRef(config)) {
+        config = ref(config)
+    }
     const loadInitialVeemixData = async () => {
         return await loadData(path, config)
     }
@@ -42,19 +48,26 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     }, {
         deep: true,
     })
-    return {
-        ...data,
-        isLoading,
-        post: async function(method, data) {
+
+    const actions = {}
+    apiMap[path].actions.forEach(method => {
+        actions[method] = async function(data: Record<string, unknown>) {
             isLoading[method] = true
+            let result = null
             try {
-                const response = await callAction(path, method, data)
+                result = await callAction(path, method, data)
                 isLoading[method] = false
-                return response
             } catch (e) {
                 isLoading[method] = false
                 throw e
             }
+            return result
         }
+    })
+
+    return {
+        ...data,
+        ...actions,
+        isLoading
     }
 }

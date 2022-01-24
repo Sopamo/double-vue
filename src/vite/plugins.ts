@@ -63,11 +63,6 @@ export const doubleVuePlugin = (): VitePlugin => {
                     updateTypescriptDefinition(phpSrc, doublePath)
                     updateApiMap(phpSrc, doublePath)
                 }
-
-                // const res = await vuePluginInstance.transform.apply(this, [src, id, options])
-
-                // res.code = res.code.replace('const _sfc_main = defineComponent({', `const _sfc_main = defineComponent({veemixPath: 'veemix${doublePath}',\n`)
-                // return res
             }
         }
     }
