@@ -1,12 +1,14 @@
 import {VitePlugin} from "unplugin";
 
+import { createUnplugin } from 'unplugin'
 const fileRegex = /\.vue/
 const tsFileRegex = /\.ts/
+const phpFileRegex = /\.php/
 import vuePlugin from "@vitejs/plugin-vue";
 import {ConfigEnv, HmrContext, ModuleNode, UserConfig} from "vite";
 import {CustomPluginOptions, ResolveIdResult} from "rollup";
 import { removePHP } from "./transform/removePhp";
-import { updateApiMap } from "./transform/apiMap";
+import { getApiMap, updateApiMap } from "./transform/apiMap";
 import { updateTypescriptDefinition } from "./transform/typescriptUpdater";
 
 const vuePluginInstance = vuePlugin({})
@@ -68,7 +70,6 @@ export const doubleVuePlugin = (): VitePlugin => {
     }
 }
 
-import { createUnplugin } from 'unplugin'
 
 export const unplugin = createUnplugin(() => {
   return {
@@ -93,6 +94,35 @@ export const unplugin = createUnplugin(() => {
   }
 })
 
+
 export const doubleTSPlugin = (): VitePlugin => {
     return unplugin.vite()
+}
+
+export const unpluginPHP = createUnplugin(() => {
+    return {
+        name: 'double-php',
+        buildStart() {
+            console.log('!!START****************************')
+        },
+        transformInclude(id) {
+            return phpFileRegex.test(id)
+        },
+        transform(phpSrc, id) {
+            if(phpFileRegex.test(id)) {
+                const phpFilePath = id.replace(/\?.+/, '')
+                const doublePath = phpFilePath.replace(doubleBasePath, '').replace('.php', '')
+                updateTypescriptDefinition(phpSrc, doublePath)
+                return {
+                    code: `export default ${JSON.stringify(getApiMap(phpSrc))}`
+                }
+            }
+            return null
+        }
+    }
+})
+
+export const doublePHPPlugin = (): VitePlugin => {
+    console.log('PHPPLUGIN')
+    return unpluginPHP.vite()
 }

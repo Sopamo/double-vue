@@ -22,6 +22,8 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     if(!apiMap[path]) {
         console.error(`Could not fetch api map for ${path}. Try restarting your dev server.`)
     }
+    // console.log('../../' + path.substring(1) + '.php')
+    // console.log(import('../../' + path.substring(1) + '.php'))
     apiMap[path].getters.forEach(entry => {
         data[entry] = ref(null)
     })

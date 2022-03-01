@@ -3,7 +3,7 @@ const fs = require('fs')
 
 export type ApiMapEntry = { actions: string[], getters: string[] }
 
-function getApiMap(src: string): ApiMapEntry {
+export function getApiMap(src: string): ApiMapEntry {
     const metaData = getPHPMetaData(src)
     return {
         getters: metaData.getters.map(entry => entry.name),

@@ -23,7 +23,7 @@ export const updateTypescriptDefinition = (src: string, doublePath: string) => {
     let globalTypes = ''
     if(existingGlobalTypeBlock) {
         globalTypes = existingGlobalTypeBlock[1]
-        globalTypes = globalTypes.replace(new RegExp('\\s*\'' + doublePath + '\':.*\\n'), '')
+        globalTypes = globalTypes.replace(new RegExp('\[ \t]*\'' + doublePath + '\':.*\\n'), '')
     }
     globalTypes += `  '${doublePath}': ${tsID}MainType\n`
 
