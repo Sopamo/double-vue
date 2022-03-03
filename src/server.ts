@@ -1,2 +1,2 @@
 export { doubleNuxtModule } from "./nuxt/nuxtModule"
-export { doubleTSPlugin, doubleVuePlugin } from "./vite/plugins"
+export { doubleRollupPlugin, doubleVitePlugin, doubleWebpackPlugin } from "./vite/plugins"

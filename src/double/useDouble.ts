@@ -1,6 +1,5 @@
 import {reactive, ref, watch, isRef } from "vue-demi"
 
-import { apiMap } from "./apiMap";
 import { callAction, loadData } from "./api";
 import { doubleTypes } from "../../dev-types";
 
@@ -14,17 +13,17 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     if(!isRef(config)) {
         config = ref(config)
     }
-    const loadInitialVeemixData = async () => {
+
+    const loadInitialDoubleData = async () => {
         return await loadData(path, config)
     }
     let data = {} as any
 
-    if(!apiMap[path]) {
-        console.error(`Could not fetch api map for ${path}. Try restarting your dev server.`)
+    const apiMap = (await import(/* @vite-ignore */path + '.php')).default
+    if(!apiMap) {
+        console.error(`Could not fetch the ${path}.php file. Try restarting your dev server.`)
     }
-    // console.log('../../' + path.substring(1) + '.php')
-    // console.log(import('../../' + path.substring(1) + '.php'))
-    apiMap[path].getters.forEach(entry => {
+    apiMap.getters.forEach(entry => {
         data[entry] = ref(null)
     })
     const setData = (newData) => {
@@ -37,7 +36,7 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
         })
     }
     try {
-        setData(await loadInitialVeemixData())
+        setData(await loadInitialDoubleData())
     } catch(e) {
         console.log(e)
     }
@@ -46,13 +45,13 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
 
     // TODO: Only re-request the entrypoints where their config has actually changed
     watch(config, async () => {
-        setData(await loadInitialVeemixData())
+        setData(await loadInitialDoubleData())
     }, {
         deep: true,
     })
 
     const actions = {}
-    apiMap[path].actions.forEach(method => {
+    apiMap.actions.forEach(method => {
         actions[method] = async function(data: Record<string, unknown>) {
             isLoading[method] = true
             let result = null

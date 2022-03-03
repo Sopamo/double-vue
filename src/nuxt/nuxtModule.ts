@@ -3,7 +3,7 @@ import {
     extendViteConfig,
 } from '@nuxt/kit-edge'
 
-import { doublePHPPlugin, doubleTSPlugin, doubleVuePlugin } from '../vite/plugins'
+import { doubleVitePlugin } from '../vite/plugins'
 
 export const doubleNuxtModule = defineNuxtModule({
     setup() {
@@ -14,9 +14,7 @@ export const doubleNuxtModule = defineNuxtModule({
                 }
             }
             config.optimizeDeps.exclude.push('vue-demi')
-            config.plugins.push(doubleVuePlugin())
-            config.plugins.push(doubleTSPlugin())
-            config.plugins.push(doublePHPPlugin())
+            config.plugins.push(doubleVitePlugin())
 
             return config
         })

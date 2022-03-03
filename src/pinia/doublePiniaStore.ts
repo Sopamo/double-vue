@@ -1,8 +1,6 @@
 import { reactive, ref, toRefs } from "vue";
-import { apiMap } from "../double/apiMap";
 import type { _GettersTree, DefineStoreOptions, StateTree, StoreDefinition, Store, _StoreWithState } from "pinia";
 import { doubleTypes } from "../../dev-types";
-import { deepUnref } from "../double/deepUnref";
 import { callAction, loadData } from "../double/api";
 import { defineStore } from 'pinia'
 import { ApiMapEntry } from "../vite/transform/apiMap";
@@ -24,8 +22,10 @@ export function defineDoublePiniaStore<
             injectDouble(path, options).then((storeOptions) => {
                 // @ts-ignore
                 const id: Id = path
-                return defineStore(id, storeOptions)()
-            }).catch(reject)
+                resolve(defineStore(id, storeOptions)())
+            }).catch((e) => {
+                throw e
+            })
         })
         
     }
