@@ -35,8 +35,6 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -44,18 +42,61 @@
 
 ## About Double
 
-Double drastically simplifies writing Vue applications with a Laravel backend. 
+Double drastically simplifies writing Vue applications with a Laravel backend. It does so, by drastically changing where you write your controller code.
 
+### How does it work?
+When using Double, your controller code is *close* to your frontend code. This let's Double automatically associate your controller code with your vue components / pinia store. By having the association via *closeness* in the file system, you don't need to define your server-side or frontend-side api anymore
+
+### Why?
+Double removes the need of you having to do a lot of work to connect your Backend code with your frontend code:
 * Double removes the need for any API boilerplate code
-* Double automatically gives you typescript types for accessing your API
-* Double integrates with pinia, so your data handling finally feels good
+* Double automatically gives you typescript types for your controller code
+* Double integrates with pinia
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Code says a thousand words
+The following two files are everything you need for having a vue component which displays all users of your app:
+
+*/pages/users.php*
+```php
+<?php
+return new class {
+    public function getUsers()
+    {
+        return  Users::all();
+    }
+};
+?>
+```
+*/pages/users.vue*
+```vue
+<template>
+    <h2>Users</h2>
+    <!--
+      `Double` automatically loads and injects the response
+       from the getUsers method into the users variable
+     -->
+    <div v-for="user in users">
+        <strong>{{ user.username }}</strong> #{{ user.id }}
+    </div>
+</template>
+
+<script lang="ts">
+    import { defineComponent } from 'vue'
+    import { useDouble } from "double-vue";
+
+    export default defineComponent({
+        async setup() {
+            const double = await useDouble('/pages/users')
+            return {
+                ...double,
+            }
+        },
+    })
+</script>
+```
 
 
 <!-- GETTING STARTED -->
@@ -66,29 +107,22 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* A Laravel installation
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+1. `composer require sopamo/double`
+2. Setup a vue project in the `double` subfolder
+   1. [Install](https://cli.vuejs.org/guide/installation.html) the vue cli
+   2. Create a new vue project `vue create double`
+3. Setup double in the new vue project
+   1. `npm install double-vue`
+   2. In src/main.js add the following lines to install double:
+      ```js
+      import { installDouble } from 'double-vue'
+      installDouble('http://localhost/double')
+      ``` 
+      Make sure to replace `localhost` with the domain that your laravel project is running at
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -108,15 +142,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+- [ ] Finalize readme
+- [ ] Finalize the example project
+- [ ] Add support to configure the data requests in pinia
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -127,14 +155,8 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion on how to improve Double, please fork the repo and create a pull request. You can also simply open an issue with any questions or bugs you find.
 Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -146,50 +168,3 @@ Don't forget to give the project a star! Thanks again!
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
