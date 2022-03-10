@@ -3,14 +3,12 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">Double Vue</h3>
+  <h1 align="center">Double</h1>
 
   <p align="center">
     The missing link between Laravel and Vue
     <br />
     <br />
-    <a href="https://github.com/Sopamo/double-vue">View Demo (todo)</a>
-    ·
     <a href="https://github.com/Sopamo/double-vue/issues">Report Bug</a>
     ·
     <a href="https://github.com/Sopamo/double-vue/issues">Request Feature</a>
@@ -38,21 +36,29 @@
   </ol>
 </details>
 
-
+<br>
 
 ## About Double
 
-Double drastically simplifies writing Vue applications with a Laravel backend. It does so, by drastically changing where you write your controller code.
+Double drastically simplifies writing Vue applications with a Laravel backend. It does so, by removing all of the API boilerplate code you have to write.
+
+![workflow comparison](double-workflow-explanation.png)
+
 
 ### How does it work?
-When using Double, your controller code is *close* to your frontend code. This let's Double automatically associate your controller code with your vue components / pinia store. By having the association via *closeness* in the file system, you don't need to define your server-side or frontend-side api anymore
+Traditionally, your API code lives in  `App\Http\Controllers\UsersController`. You also have to create an entry in your routes file, and write some frontend boilerplate code to call that API.
+
+When using Double, you place your API code next to your vue store / component files. For example you would have your vue store in `stores/users.ts` and your API code for that store in `stores/users.php`.
+
+This let's Double automatically associate your API code with your frontend code. By creating *closeness* in the file system, you don't need to manually connect your server-side code with your frontend.
+
+🚀 Double also analyzes your PHP code and intelligently creates TypeScript definitions!
 
 ### Why?
-Double removes the need of you having to do a lot of work to connect your Backend code with your frontend code:
-* Double removes the need for any API boilerplate code
-* Double automatically gives you typescript types for your controller code
-* Double integrates with pinia
 
+* Double removes the need for any API boilerplate code
+* Double automatically gives you TypeScript types for your backend API
+* Double integrates with pinia
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -130,8 +136,6 @@ To get a local copy up and running follow these simple example steps.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
 ### PHP naming conventions
@@ -158,7 +162,7 @@ return new class {
 ```
 
 Define the data that you want to receive as *state* with methods starting with `get`, followed by an uppercase letter.
-Thise data will automatically be fetched when Double initializes.
+This data will automatically be fetched when Double initializes.
 
 All other public methods are available as actions:
 
@@ -218,7 +222,6 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 
 
-<!-- ROADMAP -->
 ## Roadmap
 
 - [ ] Finalize readme
@@ -230,7 +233,6 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 
 
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -242,7 +244,6 @@ Don't forget to give the project a star! Thanks again!
 
 
 
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
