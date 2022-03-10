@@ -106,6 +106,7 @@ return new class {
 </script>
 ```
 
+Yep, that's it! No need to write any API boilerplate code. All methods from the PHP file are intelligently mapped to your frontend code. Read on to discover more complex usage examples.
 
 <!-- GETTING STARTED -->
 ## Getting Started
