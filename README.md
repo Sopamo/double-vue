@@ -123,10 +123,10 @@ To get a local copy up and running follow these simple example steps.
 1. `composer require sopamo/double-laravel`
 2. Setup a vue project in the `double` subfolder
    1. [Install](https://cli.vuejs.org/guide/installation.html) the vue cli
-   2. Create a new vue project `vue create double`
+   2. Create a new vue project `vue create double`. Make sure to select "Manually select features" and then check "Typescript" and "vue3".
 3. Setup double in the new vue project
    1. `npm install double-vue`
-   2. In src/main.js add the following lines to install double:
+   2. In src/main.ts add the following lines to install double:
       ```js
       import { installDouble } from 'double-vue'
 

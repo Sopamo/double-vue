@@ -1,6 +1,6 @@
 {
   "name": "double-vue",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./server": "./src/server.ts"
+    "./server": "./src/server.ts",
+    "./pinia": "./src/pinia.ts"
   },
   "files": [
     "src/**/*",
