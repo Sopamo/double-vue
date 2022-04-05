@@ -2,6 +2,7 @@ import {reactive, ref, watch, isRef } from "vue-demi"
 
 import { callAction, loadData } from "./api";
 import { doubleTypes } from "../../dev-types";
+import { getBundler } from "./bundler";
 
 export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}):
     Promise<
@@ -19,7 +20,12 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     }
     let data = {} as any
 
-    const apiMap = (await import(/* @vite-ignore */path + '.php')).default
+    let apiMap = null
+    if(getBundler() === 'webpack') {
+        apiMap = (await import(/* webpackPreload: true */ '/src/' + path + '.php')).default
+    } else {
+        apiMap = (await import(/* @vite-ignore */ path + '.php')).default
+    }
     if(!apiMap) {
         console.error(`Could not fetch the ${path}.php file. Try restarting your dev server.`)
     }

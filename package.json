@@ -4,14 +4,17 @@
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
-    "build": "parcel build && node ./postBuildCleanup.js"
+    "build": "parcel build && node ./postBuildCleanup.js",
+    "build-cjs": "tsc -p tsconfig-cjs.json",
+    "watch-cjs": "tsc --watch -p tsconfig-cjs.json"
   },
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./server": "./src/server.ts",
-    "./pinia": "./src/pinia.ts"
+    ".": "./dist/cjs/index.js",
+    "./server": "./dist/cjs/server.js",
+    "./pinia": "./dist/cjs/pinia.js",
+    "./nuxt": "./dist/cjs/nuxt.js"
   },
   "files": [
     "src/**/*",
@@ -59,13 +62,27 @@
   "devDependencies": {
     "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
     "@parcel/packager-ts": "^2.2.1",
+    "@parcel/transformer-typescript-tsc": "^2.4.0",
     "@parcel/transformer-typescript-types": "^2.2.1",
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "constants-browserify": "^1.0.0",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
     "parcel": "^2.2.0",
+    "path-browserify": "^1.0.1",
     "pinia": "^2.0.9",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "tty-browserify": "^0.0.1",
     "typescript": "^4.5.4",
     "unbuild": "^0.6.7",
     "unplugin": "^0.3.1",
+    "url": "^0.11.0",
+    "util": "^0.12.4",
     "vite": "^2.7.11",
+    "vm-browserify": "^1.1.2",
     "vue": "^3.0.0"
   }
 }

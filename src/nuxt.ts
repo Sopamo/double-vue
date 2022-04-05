@@ -1,0 +1,1 @@
+export { doubleNuxtModule } from "./nuxt/nuxtModule"

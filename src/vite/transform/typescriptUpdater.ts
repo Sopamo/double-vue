@@ -1,10 +1,15 @@
 import { escapeRegex } from "../../double/helpers"
 import { getTypescriptDefinition } from "./typescriptGenerator"
+const path = require('path')
 const fs = require('fs')
 
 export const updateTypescriptDefinition = (src: string, doublePath: string) => {
     const typesPath = './types/double.d.ts'
+
     const {tsDefinition, tsID} = getTypescriptDefinition(src, doublePath)
+    if(!fs.existsSync(path.dirname(typesPath))) {
+        fs.mkdirSync(path.dirname(typesPath))
+    }
     let existingTypes = ''
     if(fs.existsSync(typesPath)) {
         existingTypes = fs.readFileSync(typesPath).toString()
@@ -25,6 +30,7 @@ export const updateTypescriptDefinition = (src: string, doublePath: string) => {
         globalTypes = existingGlobalTypeBlock[1]
         globalTypes = globalTypes.replace(new RegExp('\[ \t]*\'' + doublePath + '\':.*\\n'), '')
     }
+
     globalTypes += `  '${doublePath}': ${tsID}MainType\n`
 
     newTypes += globalBeginIndicator + globalTypes + globalEndIndicator

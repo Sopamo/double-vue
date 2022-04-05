@@ -1,8 +1,10 @@
-import { reactive, ref, toRefs } from "vue";
-import type { _GettersTree, DefineStoreOptions, StateTree, StoreDefinition, Store, _StoreWithState } from "pinia";
+import { reactive, ref } from "vue";
+// @ts-ignore
+import type { _GettersTree, DefineStoreOptions, StateTree, Store, _StoreWithState } from "pinia";
+// @ts-ignore
+import { defineStore } from 'pinia';
 import { doubleTypes } from "../../dev-types";
 import { callAction, loadData } from "../double/api";
-import { defineStore } from 'pinia'
 import { ApiMapEntry } from "../vite/transform/apiMap";
 
 export function defineDoublePiniaStore<

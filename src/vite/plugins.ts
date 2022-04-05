@@ -1,4 +1,5 @@
 import { VitePlugin, createUnplugin } from "unplugin";
+import { Bundler } from "../double/bundler";
 import { getApiMap } from "./transform/apiMap";
 import { updateTypescriptDefinition } from "./transform/typescriptUpdater";
 
@@ -7,7 +8,11 @@ const doubleBasePath = process.cwd()
 
 const phpFileRegex = /\.php/
 
-export const unpluginPHP = createUnplugin(() => {
+type UserOptions = {
+    bundler: Bundler
+};
+
+export const unpluginPHP = createUnplugin((userOptions: UserOptions) => {
     return {
         name: 'double-php',
         transformInclude(id) {
@@ -17,7 +22,11 @@ export const unpluginPHP = createUnplugin(() => {
             if(phpFileRegex.test(id)) {
                 const phpFilePath = id.replace(/\?.+/, '')
                 const doublePath = phpFilePath.replace(doubleBasePath, '').replace('.php', '')
-                updateTypescriptDefinition(phpSrc, doublePath)
+                let tsPath = doublePath
+                if(userOptions.bundler === 'webpack') {
+                    tsPath = tsPath.replace(/^\/src\//, '')
+                }
+                updateTypescriptDefinition(phpSrc, tsPath)
                 return {
                     code: `export default ${JSON.stringify(getApiMap(phpSrc))}`,
                     map: null,
@@ -29,13 +38,19 @@ export const unpluginPHP = createUnplugin(() => {
 })
 
 export const doubleVitePlugin = (): VitePlugin => {
-    return unpluginPHP.vite()
+    return unpluginPHP.vite({
+        bundler: 'vite',
+    })
 }
 
 export const doubleWebpackPlugin = (): VitePlugin => {
-    return unpluginPHP.webpack()
+    return unpluginPHP.webpack({
+        bundler: 'webpack',
+    })
 }
 
 export const doubleRollupPlugin = (): VitePlugin => {
-    return unpluginPHP.rollup()
+    return unpluginPHP.rollup({
+        bundler: 'rollup',
+    })
 }

@@ -120,11 +120,10 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. `composer require sopamo/double-laravel`
-2. Setup a vue project in the `double` subfolder
+1. Setup a vue project in the `double` subfolder
    1. [Install](https://cli.vuejs.org/guide/installation.html) the vue cli
    2. Create a new vue project `vue create double`. Make sure to select "Manually select features" and then check "Typescript" and "vue3".
-3. Setup double in the new vue project
+2. Setup double in the new vue project
    1. `npm install double-vue`
    2. In src/main.ts add the following lines to install double:
       ```js
@@ -133,6 +132,11 @@ To get a local copy up and running follow these simple example steps.
       installDouble('http://localhost/double')
       ``` 
       Make sure to replace `localhost` with the domain that your laravel project is running at
+3. `composer require sopamo/double-laravel`
+4. Configure Laravel
+   1. Run `php artisan vendor:publish --provider="Sopamo\Double\DoubleServiceProvider"
+   2. In the `config/double.php` file, set `'frontend_root' => base_path('double/src')`
+   3. In the `config/cors.php` file, add `'double/*'` to the array of allowed `paths`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -229,6 +233,12 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 - [ ] Finalize the example project
 - [ ] Add support to configure the data requests in pinia
 - [ ] Create a screencast
+- [ ] PHPStorm setup instructions
+- [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
+- [ ] Configure double-vue api endpoint via .env
+- [ ] Make default double api endpoint /api/double so that you don't have to configure cors
+- [ ] Error handling
+- [ ] Ignore private / protected php methods
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
