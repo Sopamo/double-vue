@@ -65,7 +65,7 @@ This let's Double automatically associate your API code with your frontend code.
 ## Code says a thousand words
 The following two files are everything you need for having a vue component which displays all users of your app:
 
-*/pages/users.php*
+*/double/src/components/users.php*
 ```php
 <?php
 use App\Models\User;
@@ -78,7 +78,7 @@ return new class {
 };
 ?>
 ```
-*/pages/users.vue*
+*/double/src/components/users.vue*
 ```vue
 <template>
     <h2>Users</h2>
@@ -97,7 +97,7 @@ return new class {
 
     export default defineComponent({
         async setup() {
-            const double = await useDouble('/pages/users')
+            const double = await useDouble('/components/users')
             return {
                 ...double,
             }
@@ -129,14 +129,16 @@ To get a local copy up and running follow these simple example steps.
       ```js
       import { installDouble } from 'double-vue'
 
-      installDouble('http://localhost/double')
+      installDouble('http://localhost/api/double')
       ``` 
       Make sure to replace `localhost` with the domain that your laravel project is running at
+   3. `npm run serve`
 3. `composer require sopamo/double-laravel`
 4. Configure Laravel
    1. Run `php artisan vendor:publish --provider="Sopamo\Double\DoubleServiceProvider"
    2. In the `config/double.php` file, set `'frontend_root' => base_path('double/src')`
-   3. In the `config/cors.php` file, add `'double/*'` to the array of allowed `paths`
+5. Use double
+   1. Create the two example files (users.php and users.vue) from the section above to get a working example of double
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -236,7 +238,6 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 - [ ] PHPStorm setup instructions
 - [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
 - [ ] Configure double-vue api endpoint via .env
-- [ ] Make default double api endpoint /api/double so that you don't have to configure cors
 - [ ] Error handling
 - [ ] Ignore private / protected php methods
 
