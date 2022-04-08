@@ -118,14 +118,6 @@ test('invalidPHPdoesntCrash', () => {
             public typo getData() { 
                 return 5;
             }
-        };`,
-        `<?php
-        return new class {
-            public function getData() { 
-                return [
-                    x => [x]
-                ];
-            }
         };`
     ]
     phpFiles.forEach(php => {
