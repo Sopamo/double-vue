@@ -84,7 +84,7 @@ test('arrayReturnTypes', () => {
             `['a' => ['b' => 2]]`,
             `{
       a: {
-      b: 2s
+      b: 2
     }
     }`
         ],
