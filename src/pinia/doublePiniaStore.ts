@@ -5,7 +5,7 @@ import type { _GettersTree, DefineStoreOptions, StateTree, Store, _StoreWithStat
 import { defineStore } from 'pinia';
 import { doubleTypes } from "../../dev-types";
 import { callAction, loadData } from "../double/api";
-import { ApiMapEntry } from "../vite/transform/apiMap";
+import { ApiMapEntry } from "../server/transform/apiMap";
 
 export function defineDoublePiniaStore<
     Path extends keyof doubleTypes,

@@ -45,19 +45,14 @@ function treeToReturnTS(tree: Expression): string {
         }
         if (entryLike.key) {
             if (entryLike.key.kind === 'string') {
-                // @ts-ignore Couldn't find any types detailed enough to correctly set the type here
-                const entryKey = entryLike.key.value
-                // @ts-ignore
-                const entryValue = entryLike.value.value
-                if (entryLike.value.kind === 'string') {
-                    return `${entryKey}: '${entryValue}'`
-                } else if (entryLike.value.kind === 'number') {
-                    return `${entryKey}: ${entryValue}`
-                } else {
-                    return `${entryKey}: any`
-                }
+                return treeToReturnTS(entryLike.value)
             }
         }
+    }
+
+    if(['number', 'string'].includes(tree.kind)) {
+        // @ts-ignore value actually does exist
+        return tree.value
     }
     
     return 'any'
@@ -91,7 +86,7 @@ export const getPHPMetaData = (src: string): PHPMetaData => {
             return responseData
         }
         const returnBody = ((returnValue.expr as New).what as Class).body
-
+        fs.writeFileSync('debug.json', JSON.stringify(returnBody))
         returnBody.forEach((bodyEntry: Declaration) => {
             if (bodyEntry.kind === 'method') {
                 const method = bodyEntry as Method

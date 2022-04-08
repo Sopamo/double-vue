@@ -3,7 +3,7 @@ import {
     extendViteConfig,
 } from '@nuxt/kit-edge'
 
-import { doubleVitePlugin } from '../vite/plugins'
+import { doubleVitePlugin } from '../server/plugins'
 
 export const doubleNuxtModule = defineNuxtModule({
     setup() {

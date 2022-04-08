@@ -6,7 +6,9 @@
   "scripts": {
     "build": "parcel build && node ./postBuildCleanup.js",
     "build-cjs": "tsc -p tsconfig-cjs.json",
-    "watch-cjs": "tsc --watch -p tsconfig-cjs.json"
+    "watch-cjs": "tsc --watch -p tsconfig-cjs.json",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
@@ -82,6 +84,7 @@
     "url": "^0.11.0",
     "util": "^0.12.4",
     "vite": "^2.7.11",
+    "vitest": "^0.9.2",
     "vm-browserify": "^1.1.2",
     "vue": "^3.0.0"
   }

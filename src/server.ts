@@ -1,1 +1,1 @@
-export { doubleRollupPlugin, doubleVitePlugin, doubleWebpackPlugin } from "./vite/plugins"
+export { doubleRollupPlugin, doubleVitePlugin, doubleWebpackPlugin } from "./server/plugins"
