@@ -22,17 +22,31 @@ function treeToReturnTS(tree: Expression): string {
         if(!arrayLike.items[0]) {
             return `[]`
         }
-        // TODO: This does not work for all array definitions, for example for arrays where some children have explicit keys and others don't
+        // TODO: This does not work properly for all array definitions.
+        // For example for arrays where some children have explicit keys and others don't
         // TODO: Take care of proper indentation
 
         // @ts-ignore this is a wrong type coming from php-parser
-        const allChildrenHaveKeys = !arrayLike.items.find(item => [undefined, null].includes(item?.key))
-        if (!arrayLike.items[0].hasOwnProperty('key') || !allChildrenHaveKeys) {
+        const noItemHasKey = arrayLike.items.every(item => !item.hasOwnProperty('key') || [undefined, null].includes(item?.key))
+        
+        if (noItemHasKey) {
             return `(${children.join(' | ')})[]`
         } else {
+            let keylessIndex = 0
             // @ts-ignore this is a wrong type coming from php-parser
             const childData = arrayLike.items.map((item, idx) => {
-                return item.key.value + ': ' + children[idx]
+                // For items without a key, the key is a number starting from 0
+                // and being 1 larger than the last numeric key
+                // https://www.php.net/manual/en/language.types.array.php
+                let key = item.key?.value
+                if([undefined, null].includes(key)) {
+                    key = keylessIndex++
+                } else {
+                    if(item.key.kind === 'number') {
+                        keylessIndex = parseInt(item.key.value) + 1
+                    }
+                }
+                return key + ': ' + children[idx]
             })
             return `{\n      ${childData.join('\n      ')}\n    }`
             
@@ -44,7 +58,7 @@ function treeToReturnTS(tree: Expression): string {
             return treeToReturnTS(entryLike.value)
         }
         if (entryLike.key) {
-            if (entryLike.key.kind === 'string') {
+            if (['string', 'number'].includes(entryLike.key.kind)) {
                 return treeToReturnTS(entryLike.value)
             }
         }
@@ -86,7 +100,7 @@ export const getPHPMetaData = (src: string): PHPMetaData => {
             return responseData
         }
         const returnBody = ((returnValue.expr as New).what as Class).body
-        fs.writeFileSync('debug.json', JSON.stringify(returnBody))
+        // fs.writeFileSync('debug.json', JSON.stringify(returnBody))
         returnBody.forEach((bodyEntry: Declaration) => {
             if (bodyEntry.kind === 'method') {
                 const method = bodyEntry as Method

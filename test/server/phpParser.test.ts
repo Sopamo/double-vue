@@ -88,6 +88,15 @@ test('arrayReturnTypes', () => {
     }
     }`
         ],
+        [
+            `[1, 'foo'=>'bar', 3 => 4, 'baz']`,
+            `{
+      0: 1
+      foo: bar
+      3: 4
+      4: baz
+    }`
+        ],
     ]
     tests.forEach(test => {
         const php =  `<?php

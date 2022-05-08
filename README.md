@@ -231,6 +231,7 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 ## Roadmap
 
+- [ ] Fix HMR breaking in sample project
 - [ ] Finalize readme
 - [ ] Finalize the example project
 - [ ] Add support to configure the data requests in pinia
