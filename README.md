@@ -231,15 +231,15 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 ## Roadmap
 
-- [ ] Fix HMR breaking in sample project
+- [ ] Add support to configure the data requests in pinia
 - [ ] Finalize readme
 - [ ] Finalize the example project
-- [ ] Add support to configure the data requests in pinia
 - [ ] Create a screencast
 - [ ] PHPStorm setup instructions
-- [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
 - [ ] Configure double-vue api endpoint via .env
-- [ ] Error handling
+- [ ] Fix HMR breaking in sample project
+- [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
+- [x] Error handling
 - [x] Ignore private / protected php methods
 
 <p align="right">(<a href="#top">back to top</a>)</p>

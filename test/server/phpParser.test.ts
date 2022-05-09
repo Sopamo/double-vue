@@ -144,3 +144,48 @@ test('invalidPHPdoesntCrash', () => {
         }
     })
 })
+
+
+test('privateMethodsAreIgnored', () => {
+    const php = 
+        `<?php
+        return new class {
+            public function getData() {
+                return 5;
+            }
+            private function getInternalData() { 
+                return 6;
+            }
+        };`
+    expect(getPHPMetaData(php)).toStrictEqual({
+        actions: [],
+        getters: [
+            {
+                name: "data",
+                return: "5",
+            }
+        ],
+    })
+})
+
+test('staticMethodsAreIgnored', () => {
+    const php = 
+        `<?php
+        return new class {
+            public function getData() {
+                return 5;
+            }
+            public static function getInternalData() { 
+                return 6;
+            }
+        };`
+    expect(getPHPMetaData(php)).toStrictEqual({
+        actions: [],
+        getters: [
+            {
+                name: "data",
+                return: "5",
+            }
+        ],
+    })
+})
