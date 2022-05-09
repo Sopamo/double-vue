@@ -240,7 +240,7 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 - [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
 - [ ] Configure double-vue api endpoint via .env
 - [ ] Error handling
-- [ ] Ignore private / protected php methods
+- [x] Ignore private / protected php methods
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

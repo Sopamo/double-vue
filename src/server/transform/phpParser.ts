@@ -74,7 +74,6 @@ function treeToReturnTS(tree: Expression): string {
 
 export const getPHPMetaData = (src: string): PHPMetaData => {
     const parser = new Engine({
-        // some options :
         parser: {
             extractDoc: true,
             php7: true
@@ -104,6 +103,10 @@ export const getPHPMetaData = (src: string): PHPMetaData => {
         returnBody.forEach((bodyEntry: Declaration) => {
             if (bodyEntry.kind === 'method') {
                 const method = bodyEntry as Method
+                
+                if(method.isStatic || method.visibility !== 'public') {
+                    return
+                }
 
                 let methodName = method.name
                 if(typeof methodName !== 'string') {
