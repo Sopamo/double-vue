@@ -1,10 +1,10 @@
 {
   "name": "double-vue",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
-    "build": "parcel build && node ./postBuildCleanup.js",
+    "build": "npm run build-cjs && parcel build && node ./postBuildCleanup.js",
     "build-cjs": "tsc -p tsconfig-cjs.json",
     "watch-cjs": "tsc --watch -p tsconfig-cjs.json",
     "test": "vitest",
