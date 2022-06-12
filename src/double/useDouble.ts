@@ -8,7 +8,8 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     Promise<
         doubleTypes[Path]['state'] &
         doubleTypes[Path]['actions'] &
-        { isLoading: doubleTypes[Path]['isLoading'] }
+        { isLoading: doubleTypes[Path]['isLoading'] } &
+        { refresh: () => Promise<void> }
     > {
     // To be able to watch the config it has to be a ref
     if(!isRef(config)) {
@@ -41,11 +42,7 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
             }
         })
     }
-    try {
-        setData(await loadInitialDoubleData())
-    } catch(e) {
-        console.log(e)
-    }
+    setData(await loadInitialDoubleData())
 
     const isLoading = reactive<Record<string, boolean>>({})
 
@@ -58,6 +55,7 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
 
     const actions = {}
     apiMap.actions.forEach(method => {
+        isLoading[method] = false
         actions[method] = async function(data: Record<string, unknown>) {
             isLoading[method] = true
             let result = null
@@ -72,9 +70,14 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
         }
     })
 
+    const refresh = async () => {
+        setData(await loadInitialDoubleData())
+    }
+
     return {
         ...data,
         ...actions,
-        isLoading
+        isLoading,
+        refresh,
     }
 }

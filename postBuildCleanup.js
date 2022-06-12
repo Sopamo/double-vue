@@ -4,3 +4,5 @@ import fs from 'fs'
 let types = fs.readFileSync('./dist/index.d.ts').toString()
 types = types.replace(/import { doubleTypes } .+/, '')
 fs.writeFileSync('./dist/index.d.ts', types)
+
+fs.writeFileSync('./dist/cjs/package.json', '{"type":"commonjs"}')

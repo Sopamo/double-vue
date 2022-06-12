@@ -129,7 +129,7 @@ To get a local copy up and running follow these simple example steps.
       ```js
       import { installDouble } from 'double-vue'
 
-      installDouble('http://localhost/api/double')
+      installDouble('http://localhost/api/double', 'webpack')
       ``` 
       Make sure to replace `localhost` with the domain that your laravel project is running at
    3. `npm run serve`
@@ -231,6 +231,8 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 ## Roadmap
 
+- [ ] Unify double between regular usage and pinia
+- [ ] Add reactivity to isLoading in regular usage
 - [ ] Add support to configure the data requests in pinia
 - [ ] Finalize readme
 - [ ] Finalize the example project
@@ -239,6 +241,7 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 - [ ] Configure double-vue api endpoint via .env
 - [ ] Fix HMR breaking in sample project
 - [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
+- [x] Add support for the refresh method outside of pinia
 - [x] Error handling
 - [x] Ignore private / protected php methods
 

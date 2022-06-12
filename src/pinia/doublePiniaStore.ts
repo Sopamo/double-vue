@@ -56,14 +56,13 @@ export async function injectDouble<
     options.state = () => {
         const double = useDouble(path, apiMap)
         // @ts-ignore
-        if (options.actions.refresh === undefined) {
-            // @ts-ignore
-            options.actions.refresh = function () {
-                double.refresh()
-            }
+        // TODO: Throw warning if this is already defined
+        options.actions.refresh = function () {
+            double.refresh()
         }
 
         Object.entries(double.actions).forEach(([k, v]) => {
+            // TODO: Throw warning if this is already defined
             options.actions[k] = v
         })
         let state = {}
