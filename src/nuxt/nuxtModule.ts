@@ -13,7 +13,6 @@ export const doubleNuxtModule = defineNuxtModule({
                     exclude: []
                 }
             }
-            config.optimizeDeps.exclude.push('vue-demi')
             config.plugins.push(doubleVitePlugin())
 
             return config

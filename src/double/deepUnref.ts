@@ -1,6 +1,6 @@
 // Inspired by https://github.com/DanHulton/vue-deepunref
 // Published on the MIT license
-import { unref, isRef }  from 'vue-demi'
+import { unref, isRef }  from 'vue'
 
 const isObject = (val) => val !== null && typeof val === 'object';
 const isArray = Array.isArray;

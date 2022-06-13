@@ -1,4 +1,4 @@
-import {reactive, ref, watch, isRef } from "vue-demi"
+import {reactive, ref, watch, isRef } from "vue"
 
 import { callAction, loadData } from "./api";
 import { doubleTypes } from "../../dev-types";

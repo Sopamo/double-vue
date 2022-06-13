@@ -1,6 +1,6 @@
 {
   "name": "double-vue",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
@@ -34,6 +34,7 @@
     "laravel",
     "api",
     "vite",
+    "webpack",
     "nuxt",
     "pinia"
   ],
@@ -45,18 +46,13 @@
   "homepage": "https://github.com/Sopamo/double-vue#readme",
   "dependencies": {
     "@vitejs/plugin-vue": "^2.0.1",
-    "php-parser": "^3.0.3",
-    "vue-demi": "^0.12.1"
+    "php-parser": "^3.0.3"
   },
   "peerDependencies": {
     "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
-    "@vue/composition-api": "^1.0.0-rc.1",
-    "vue": "^2.0.0 || >=3.0.0"
+    "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
-    "@vue/composition-api": {
-      "optional": true
-    },
     "@nuxt/kit-edge": {
       "optional": true
     }
@@ -86,6 +82,6 @@
     "vite": "^2.7.11",
     "vitest": "^0.9.2",
     "vm-browserify": "^1.1.2",
-    "vue": "^3.0.0"
+    "vue": "^3.2.37"
   }
 }
