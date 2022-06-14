@@ -21,15 +21,8 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
     }
     let data = {} as any
 
-    let apiMap = null
-    if(getBundler() === 'webpack') {
-        apiMap = (await import(/* webpackPreload: true */ '/src/' + path + '.php')).default
-    } else {
-        apiMap = (await import(/* @vite-ignore */ path + '.php')).default
-    }
-    if(!apiMap) {
-        console.error(`Could not fetch the ${path}.php file. Try restarting your dev server.`)
-    }
+    const apiMap = await getApiMap(path)
+
     apiMap.getters.forEach(entry => {
         data[entry] = ref(null)
     })
@@ -80,4 +73,17 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
         isLoading,
         refresh,
     }
+}
+
+export async function getApiMap(path: string): Promise<{ getters: string[], actions: string[] }> {
+    let apiMap = null
+    if(getBundler() === 'webpack') {
+        apiMap = (await import(/* webpackPreload: true */ '/src/' + path + '.php')).default
+    } else {
+        apiMap = (await import(/* @vite-ignore */ path + '.php')).default
+    }
+    if(!apiMap) {
+        console.error(`Could not fetch the ${path}.php file. Try restarting your dev server.`)
+    }
+    return apiMap
 }

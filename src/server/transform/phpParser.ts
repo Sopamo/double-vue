@@ -30,6 +30,11 @@ function treeToReturnTS(tree: Expression): string {
         const noItemHasKey = arrayLike.items.every(item => !item.hasOwnProperty('key') || [undefined, null].includes(item?.key))
         
         if (noItemHasKey) {
+            // Check if all children are the same
+            const allChildrenIdentical = !children.some(child => child !== children[0])
+            if(allChildrenIdentical) {
+                return `${children[0]}[]`
+            }
             return `(${children.join(' | ')})[]`
         } else {
             let keylessIndex = 0
@@ -66,7 +71,7 @@ function treeToReturnTS(tree: Expression): string {
 
     if(['number', 'string'].includes(tree.kind)) {
         // @ts-ignore value actually does exist
-        return tree.value
+        return tree.kind
     }
     
     return 'any'

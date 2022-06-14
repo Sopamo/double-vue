@@ -1,11 +1,9 @@
-import { reactive, ref } from "vue";
 // @ts-ignore
 import type { _GettersTree, DefineStoreOptions, StateTree, Store, _StoreWithState } from "pinia";
 // @ts-ignore
 import { defineStore } from 'pinia';
 import { doubleTypes } from "../../dev-types";
-import { callAction, loadData } from "../double/api";
-import { ApiMapEntry } from "../server/transform/apiMap";
+import { getApiMap, useDouble } from "../double/useDouble";
 
 export function defineDoublePiniaStore<
     Path extends keyof doubleTypes,
@@ -51,26 +49,35 @@ export async function injectDouble<
 
     // Todo: This might not be the best idea, as options.state is a function which returns a unique state object and all of those
     // state objects will use the same `double` store
-    const apiMap = (await import(/* @vite-ignore */path + '.php')).default
+    const double = await useDouble(path)
+    const apiMap = await getApiMap(path)
+    
+    // TODO: Properly fix @ts-ignore stuff
+
     // @ts-ignore
     options.state = () => {
-        const double = useDouble(path, apiMap)
         // @ts-ignore
-        // TODO: Throw warning if this is already defined
+        if(options.actions.refresh !== undefined) {
+            console.warn('Overriding the refresh action is currently not supported. You can create a customRefresh action which calls double\'s refresh action.')
+        }
+        // @ts-ignore
         options.actions.refresh = function () {
             double.refresh()
         }
 
-        Object.entries(double.actions).forEach(([k, v]) => {
-            // TODO: Throw warning if this is already defined
-            options.actions[k] = v
+        apiMap.actions.forEach((action) => {
+            if(options.actions[action] !== undefined) {
+                console.warn('You can not specify the ' + action + ' action if your PHP file already defines it. You can create your own custom action which calls this action.')
+            }
+            options.actions[action] = double[action]
         })
         let state = {}
         if (originalState) {
             state = originalState()
         }
-        Object.entries(double.state).forEach(([k, v]) => {
-            state[k] = v
+        // In this context "getter" means a double getter (e.g. getBlogEntries) and not a pinia getter.
+        apiMap.getters.forEach((getter) => {
+            state[getter] = double[getter]
         })
         return state
     }
@@ -81,48 +88,4 @@ export async function injectDouble<
 
     // @ts-ignore
     return options
-}
-
-export function useDouble<Path extends keyof doubleTypes>(path: Path, apiMap: ApiMapEntry): { state: doubleTypes[Path]['state'], refresh: () => Promise<void>, actions: object } {
-    let state = {
-        isLoading: reactive<Record<string, boolean>>({}),
-    }
-    apiMap.getters.forEach(entry => {
-        state[entry] = ref(null)
-    })
-    const refresh = () => {
-        return loadData(path)
-            .then(server => {
-                Object.entries(server).forEach(([key, value]) => {
-                    state[key].value = value
-                })
-            })
-            .catch((e) => {
-                console.log('ERROR:')
-                console.log(e)
-            })
-    }
-    refresh()
-
-    let actions = {}
-    apiMap.actions.forEach(method => {
-        actions[method] = async function (data: Record<string, unknown>) {
-            state.isLoading[method] = true
-            let result = null
-            try {
-                result = await callAction(path, method, data)
-                state.isLoading[method] = false
-            } catch (e) {
-                state.isLoading[method] = false
-                throw e
-            }
-            return result
-        }
-    })
-
-    return {
-        actions,
-        state,
-        refresh,
-    }
 }

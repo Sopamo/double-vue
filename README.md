@@ -231,7 +231,6 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 ## Roadmap
 
-- [ ] Unify double between regular usage and pinia
 - [ ] Add support to configure the data requests in pinia
 - [ ] Finalize readme
 - [ ] Finalize the example project
@@ -239,6 +238,7 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 - [ ] PHPStorm setup instructions
 - [ ] Configure double-vue api endpoint via .env
 - [ ] Maybe read the laravel config for domain & double base path to build time and configure double-vue that way (maybe execute laravel to get the config)
+- [x] Unify double between regular usage and pinia
 - [x] Fix HMR breaking in sample project
 - [x] Add support for the refresh method outside of pinia
 - [x] Error handling
