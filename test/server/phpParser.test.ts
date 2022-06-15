@@ -70,31 +70,31 @@ test('arrayReturnTypes', () => {
         [
             `['a' => 1]`,
             `{
-      a: 1
+      a: number
     }`
         ],
         [
             `['a' => 1, 'b' => 2,]`,
             `{
-      a: 1
-      b: 2
+      a: number
+      b: number
     }`
         ],
         [
             `['a' => ['b' => 2]]`,
             `{
       a: {
-      b: 2
+      b: number
     }
     }`
         ],
         [
             `[1, 'foo'=>'bar', 3 => 4, 'baz']`,
             `{
-      0: 1
-      foo: bar
-      3: 4
-      4: baz
+      0: number
+      foo: string
+      3: number
+      4: string
     }`
         ],
     ]
@@ -162,7 +162,7 @@ test('privateMethodsAreIgnored', () => {
         getters: [
             {
                 name: "data",
-                return: "5",
+                return: "number",
             }
         ],
     })
@@ -184,7 +184,7 @@ test('staticMethodsAreIgnored', () => {
         getters: [
             {
                 name: "data",
-                return: "5",
+                return: "number",
             }
         ],
     })

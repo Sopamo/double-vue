@@ -71,14 +71,23 @@ export async function injectDouble<
             }
             options.actions[action] = double[action]
         })
-        let state = {}
+        let state: Record<string, any> = {}
         if (originalState) {
             state = originalState()
         }
         // In this context "getter" means a double getter (e.g. getBlogEntries) and not a pinia getter.
         apiMap.getters.forEach((getter) => {
+            if(state[getter] !== undefined) {
+                console.warn('You can not specify the ' + getter + ' state key if your PHP file already defines it.')
+            }
             state[getter] = double[getter]
         })
+
+        if(state.isLoading !== undefined) {
+            console.warn('You can not specify the isLoading state key, because it\'s reserved by double.')
+        }
+        state.isLoading = double.isLoading
+
         return state
     }
     if (options.actions === undefined) {
