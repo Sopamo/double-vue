@@ -2,6 +2,7 @@
 import type { _GettersTree, DefineStoreOptions, StateTree, Store, _StoreWithState } from "pinia";
 // @ts-ignore
 import { defineStore } from 'pinia';
+import { computed, reactive, Ref, watch } from "vue";
 import { doubleTypes } from "../../dev-types";
 import { getApiMap, useDouble } from "../double/useDouble";
 
@@ -19,10 +20,21 @@ export function defineDoublePiniaStore<
 >> {
     return () => {
         return new Promise((resolve, reject) => {
-            injectDouble(path, options).then((storeOptions) => {
+            injectDouble(path, options).then(({storeOptions, config}) => {
                 // @ts-ignore
                 const id: Id = path
-                resolve(defineStore(id, storeOptions)())
+                const store = defineStore(id, storeOptions)()
+
+                // Setup a watcher on the queryConfig getter
+                // So we can tell double to re-fetch the data whenever it changes
+                if(typeof store.queryConfig !== undefined) {
+                    watch(computed(() => store.queryConfig), () => {
+                        Object.entries(store.queryConfig).forEach(([key, value]) => {
+                            config[key] = value
+                        })
+                    })
+                }
+                resolve(store)
             }).catch((e) => {
                 throw e
             })
@@ -38,18 +50,22 @@ export async function injectDouble<
     Getters extends _GettersTree<State> = {},
     Actions = {}
 >(path: Path, options: Omit<DefineStoreOptions<Id, State, Getters, Actions>, 'id'>):
-    Promise<Omit<DefineStoreOptions<
-        Id,
-        State & doubleTypes[Path]['state'] & { isLoading: doubleTypes[Path]['isLoading'] },
-        Getters,
-        Actions & { refresh: () => Promise<void> } & doubleTypes[Path]['actions']
-    >, 'id'>> {
+    Promise<{
+        storeOptions: Omit<DefineStoreOptions<
+            Id,
+            State & doubleTypes[Path]['state'] & { isLoading: doubleTypes[Path]['isLoading'] },
+            Getters,
+            Actions & { refresh: () => Promise<void> } & doubleTypes[Path]['actions']
+        >, 'id'>,
+        config: {}
+    }> {
 
     const originalState = options.state
 
     // Todo: This might not be the best idea, as options.state is a function which returns a unique state object and all of those
     // state objects will use the same `double` store
-    const double = await useDouble(path)
+    const config = reactive({})
+    const double = await useDouble(path, config)
     const apiMap = await getApiMap(path)
     
     // TODO: Properly fix @ts-ignore stuff
@@ -95,6 +111,9 @@ export async function injectDouble<
         options.actions = {}
     }
 
-    // @ts-ignore
-    return options
+    return {
+        // @ts-ignore
+        storeOptions: options,
+        config,
+    }
 }
