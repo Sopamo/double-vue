@@ -13,12 +13,12 @@ test('numberReturnType', () => {
         getters: [
             {
                 name: 'data',
-                return: '5'
+                return: 'number'
             }
         ]
     })
 })
-test('numberReturnType', () => {
+test('stringReturnType', () => {
     const php = `<?php
     return new class {
         public function getData() {
@@ -30,7 +30,7 @@ test('numberReturnType', () => {
         getters: [
             {
                 name: 'data',
-                return: 'hi'
+                return: 'string'
             }
         ]
     })
@@ -61,11 +61,11 @@ test('arrayReturnTypes', () => {
         ],
         [
             `[1]`,
-            '(1)[]'
+            'number[]'
         ],
         [
             `[1,2]`,
-            '(1 | 2)[]'
+            'number[]'
         ],
         [
             `['a' => 1]`,
