@@ -19,6 +19,7 @@ export const unpluginPHP = createUnplugin((userOptions: UserOptions) => {
             return phpFileRegex.test(id)
         },
         transform(phpSrc, id) {
+            console.log(id)
             if(phpFileRegex.test(id)) {
                 const phpFilePath = id.replace(/\?.+/, '')
                 const doublePath = phpFilePath.replace(doubleBasePath, '').replace('.php', '')

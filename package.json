@@ -4,17 +4,15 @@
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
-    "build": "npm run build-cjs && parcel build && node ./postBuildCleanup.js",
-    "build-cjs": "tsc -p tsconfig-cjs.json",
-    "watch-cjs": "tsc --watch -p tsconfig-cjs.json",
+    "build": "tsup && node ./postBuildCleanup.js",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/cjs/index.js",
-    "./server": "./dist/cjs/server.js",
+    ".": "./dist/index.js",
+    "./bundler": "./dist/bundler.cjs",
     "./nuxt": "./dist/cjs/nuxt.js"
   },
   "files": [
@@ -42,24 +40,26 @@
   },
   "homepage": "https://github.com/Sopamo/double-vue#readme",
   "dependencies": {
-    "php-parser": "^3.0.3"
+    "php-parser": "^3.0.3",
+    "unplugin": "^0.3.1"
   },
   "peerDependencies": {
     "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
-    "vue": "^3.0.0",
-    "pinia": "^2.0.9"
+    "pinia": "^2.0.9",
+    "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit-edge": {
       "optional": true
+    },
+    "pinia": {
+      "optional": true
     }
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.1",
     "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
-    "@parcel/packager-ts": "^2.2.1",
-    "@parcel/transformer-typescript-tsc": "^2.4.0",
-    "@parcel/transformer-typescript-types": "^2.2.1",
+    "@types/node": "^18.0.0",
+    "@vitejs/plugin-vue": "^2.0.1",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "constants-browserify": "^1.0.0",
@@ -71,10 +71,9 @@
     "pinia": "^2.0.9",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
+    "tsup": "^6.1.2",
     "tty-browserify": "^0.0.1",
     "typescript": "^4.5.4",
-    "unbuild": "^0.6.7",
-    "unplugin": "^0.3.1",
     "url": "^0.11.0",
     "util": "^0.12.4",
     "vite": "^2.7.11",

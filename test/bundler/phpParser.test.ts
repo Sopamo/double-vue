@@ -1,5 +1,5 @@
 import { assert, expect, test } from 'vitest'
-import { getPHPMetaData } from '../../src/server/transform/phpParser'
+import { getPHPMetaData } from '../../src/bundler/transform/phpParser'
 
 test('numberReturnType', () => {
     const php = `<?php

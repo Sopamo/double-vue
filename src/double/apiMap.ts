@@ -1,5 +1,5 @@
 import { doubleTypes } from "../../dev-types"
-import { ApiMapEntry } from "../server/transform/apiMap"
+import { ApiMapEntry } from "../bundler/transform/apiMap"
 
 let apiMap = {} as Record<keyof doubleTypes, ApiMapEntry>
 
