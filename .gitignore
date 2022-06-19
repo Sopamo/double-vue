@@ -2,3 +2,5 @@
 .parcel-cache
 node_modules
 dist
+/pinia.js
+/pinia.d.ts

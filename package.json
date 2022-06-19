@@ -1,6 +1,6 @@
 {
   "name": "double-vue",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
@@ -10,13 +10,18 @@
   },
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./bundler": "./dist/bundler.cjs",
-    "./nuxt": "./dist/cjs/nuxt.js"
+    "./pinia": "./pinia.js",
+    "./bundler": "./dist/bundler/index.cjs",
+    "./nuxt": "./dist/nuxt/index.cjs"
   },
   "files": [
     "dist/**/*",
+    "pinia.js",
+    "pinia.d.ts",
+    "package.json",
     "tsconfig.json"
   ],
   "repository": {
