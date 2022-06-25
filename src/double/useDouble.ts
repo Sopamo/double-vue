@@ -78,6 +78,9 @@ export async function useDouble<Path extends keyof doubleTypes>(path: Path, conf
 export async function getApiMap(path: string): Promise<{ getters: string[], actions: string[] }> {
     let apiMap = null
     if(getBundler() === 'webpack') {
+        // Webpack can't dynamically import files from the root folder, so we have to remove the mandatory /src/ prefix
+        // because we need it to be hardcodet in the import call.
+        path = path.replace(/^\/?src\//, '')
         apiMap = (await import(/* webpackPreload: true */ '/src/' + path + '.php')).default
     } else {
         apiMap = (await import(/* @vite-ignore */ path + '.php')).default

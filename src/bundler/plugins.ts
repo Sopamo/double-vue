@@ -19,14 +19,10 @@ export const unpluginPHP = createUnplugin((userOptions: UserOptions) => {
             return phpFileRegex.test(id)
         },
         transform(phpSrc, id) {
-            console.log(id)
             if(phpFileRegex.test(id)) {
                 const phpFilePath = id.replace(/\?.+/, '')
                 const doublePath = phpFilePath.replace(doubleBasePath, '').replace('.php', '')
                 let tsPath = doublePath
-                if(userOptions.bundler === 'webpack') {
-                    tsPath = tsPath.replace(/^\/src\//, '')
-                }
                 updateTypescriptDefinition(phpSrc, tsPath)
                 return {
                     code: `export default ${JSON.stringify(getApiMap(phpSrc))}`,
