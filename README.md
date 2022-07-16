@@ -68,12 +68,19 @@ The following two files are everything you need for having a vue component which
 */double/src/components/users.php*
 ```php
 <?php
-use App\Models\User;
-
 return new class {
     public function getUsers()
     {
-        return  Users::all();
+        // We return a static array here, but you can access all 
+        // Laravel features here. Something like:
+        //   return User::all();
+        // would work as well.
+        return [
+          [
+            'id' => 1,
+            'username' => 'Quentin'
+          ]
+        ];
     }
 };
 ?>
@@ -97,7 +104,7 @@ return new class {
 
     export default defineComponent({
         async setup() {
-            const double = await useDouble('/components/users')
+            const double = await useDouble('/src/components/users')
             return {
                 ...double,
             }
@@ -108,37 +115,62 @@ return new class {
 
 Yep, that's it! No need to write any API boilerplate code. All methods from the PHP file are intelligently mapped to your frontend code. Read on to discover more complex usage examples.
 
-<!-- GETTING STARTED -->
-## Getting Started
+## Installation
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
 
-* A Laravel installation
+1. Setup a [new Laravel project](https://laravel.com/docs/9.x/installation), or use an existing one
 
-### Installation
 
-1. Setup a vue project in the `double` subfolder
-   1. [Install](https://cli.vuejs.org/guide/installation.html) the vue cli
-   2. Create a new vue project `vue create double`. Make sure to select "Manually select features" and then check "Typescript" and "vue3".
-2. Setup double in the new vue project
-   1. `npm install double-vue`
-   2. In src/main.ts add the following lines to install double:
-      ```js
-      import { installDouble } from 'double-vue'
+### **Vue setup**
+   1. Setup a vue project in the `double` subfolder
+      1. [Install](https://cli.vuejs.org/guide/installation.html) the vue cli
+      2. Go to your laravel installation
+      3. Create a new vue project `vue create double`. Make sure to select "Manually select features" and then check "Typescript" and "vue3".
+   3. Setup double in the new vue project
+      1. `cd double`
+      2. `npm install double-vue`
+      3. In src/main.ts add the following lines before the `createApp(App)` call:
+         ```js
+         import { installDouble } from 'double-vue'
 
-      installDouble('http://localhost/api/double', 'webpack')
-      ``` 
-      Make sure to replace `localhost` with the domain that your laravel project is running at
-   3. `npm run serve`
-3. `composer require sopamo/double-laravel`
-4. Configure Laravel
-   1. Run `php artisan vendor:publish --provider="Sopamo\Double\DoubleServiceProvider"
-   2. In the `config/double.php` file, set `'frontend_root' => base_path('double/src')`
-5. Use double
-   1. Create the two example files (users.php and users.vue) from the section above to get a working example of double
+         installDouble('http://localhost/api/double', 'webpack')
+         ``` 
+         Make sure to replace `localhost` with the domain that your laravel project is running at
+      4. Add this `vue.config.js` file:
+          ```
+          const { defineConfig } = require('@vue/cli-service')
+          const { doubleWebpackPlugin } = require('double-vue/bundler')
+          const path = require("path")
+
+          module.exports = defineConfig({
+            transpileDependencies: true,
+            configureWebpack: {
+              plugins: [
+                  doubleWebpackPlugin()
+              ]
+            }
+          })
+          ```
+      5. `npm run serve`
+
+### **Laravel setup**
+1. Go back to your laravel installation
+2. `composer require sopamo/double-laravel`
+3. `php artisan vendor:publish --provider="Sopamo\Double\DoubleServiceProvider"`
+
+
+### **Use double**
+   1. Create the two example files from above (users.php and users.vue) in the `double/src/components` folder to get a working example of double.
+   2. Use your new users.vue component by embedding it with a `<suspense>` component like so:
+      ```
+      <suspense>
+        <users />
+      </suspense>
+      ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
