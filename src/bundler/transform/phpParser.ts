@@ -128,7 +128,6 @@ export const getPHPMetaData = (src: string): PHPMetaData => {
                 // Those are methods we call to get our data object.
                 // All other methods will be available as actions to be called on demand
                 if (methodName.startsWith('get')) {
-                    // fs.writeFileSync('./phpanalyze-get.js', JSON.stringify(method))
 
                     const firstKeyCharacter = methodName.substring(3, 4)
                     if (firstKeyCharacter === firstKeyCharacter.toLocaleUpperCase()) {
@@ -140,7 +139,6 @@ export const getPHPMetaData = (src: string): PHPMetaData => {
                         })
                     }
                 } else {
-                    fs.writeFileSync('./phpanalyze-store.js', JSON.stringify(method))
                     responseData.actions.push({
                         name: methodName,
                         return: returnType
