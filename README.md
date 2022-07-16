@@ -208,7 +208,7 @@ All other public methods are available as actions:
 ```js
 import { useDouble } from 'double-vue'
 
-const double = useDouble('/pages/users')
+const double = useDouble('/src/pages/users')
 
 // This will contain the return value of the getUsers method
 console.log(double.users)
@@ -232,7 +232,7 @@ import { useDouble } from 'double-vue'
 
 const userQuery = ref('Bob')
 
-const double = useDouble('/pages/users', {
+const double = useDouble('/src/pages/users', {
   getUsers: {
     search: userQuery
   }

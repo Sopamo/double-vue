@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 
 export const updateTypescriptDefinition = (src: string, doublePath: string) => {
-    const typesPath = './types/double.d.ts'
+    const typesPath = './src/double.d.ts'
 
     const {tsDefinition, tsID} = getTypescriptDefinition(src, doublePath)
     if(!fs.existsSync(path.dirname(typesPath))) {
