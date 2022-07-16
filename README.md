@@ -140,7 +140,7 @@ To get a local copy up and running follow these simple example steps.
          ``` 
          Make sure to replace `localhost` with the domain that your laravel project is running at
       4. Add this `vue.config.js` file:
-          ```
+          ```js
           const { defineConfig } = require('@vue/cli-service')
           const { doubleWebpackPlugin } = require('double-vue/bundler')
           const path = require("path")
