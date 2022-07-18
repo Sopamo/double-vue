@@ -3,7 +3,7 @@
 <br />
 <div align="center">
 
-![workflow comparison](./assets/logo-transparent.png)
+  ![double logo](./assets/logo-transparent.png)
 
   <p align="center">
     The missing link between Laravel and Vue
@@ -11,7 +11,7 @@
     <br />
     <a href="https://github.com/Sopamo/double-vue/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Sopamo/double-vue/issues">Request Feature</a>
+    <a href="https://github.com/Sopamo/double-vue/discussions">Give Feedback</a>
   </p>
 </div>
 
