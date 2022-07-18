@@ -6,7 +6,9 @@
   ![double logo](./assets/logo-transparent.png)
 
   <p align="center">
-    The missing link between Laravel and Vue
+    The missing link between Laravel and Vue.<br />
+    <strong>Status</strong>: alpha<br />
+    RC planned for Q4 / 2022
     <br />
     <br />
     <a href="https://github.com/Sopamo/double-vue/issues">Report Bug</a>
