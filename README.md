@@ -3,7 +3,7 @@
 <br />
 <div align="center">
 
-![workflow comparison](./assets/logo.png)
+![workflow comparison](./assets/logo-transparent.png)
 
   <p align="center">
     The missing link between Laravel and Vue
