@@ -39,7 +39,12 @@ This let's Double automatically associate your API code with your frontend code.
 * Double automatically gives you TypeScript types for your backend API
 * Double integrates with pinia
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
+<div align="center">
+[![Watch the introduction video](./assets/introduction-thumbnail.png)](https://youtu.be/Amd0ynVh5Ik)
+[Watch the introduction video](https://youtu.be/Amd0ynVh5Ik)
+</div>
+
 
 ## Code says a thousand words
 The following two files are everything you need for having a vue component which displays all users of your app:
