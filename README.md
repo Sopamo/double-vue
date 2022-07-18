@@ -41,8 +41,10 @@ This let's Double automatically associate your API code with your frontend code.
 
 
 <div align="center">
+
 [![Watch the introduction video](./assets/introduction-thumbnail.png)](https://youtu.be/Amd0ynVh5Ik)
 [Watch the introduction video](https://youtu.be/Amd0ynVh5Ik)
+
 </div>
 
 
