@@ -42,7 +42,7 @@
 
 Double drastically simplifies writing Vue applications with a Laravel backend. It does so, by removing all of the API boilerplate code you have to write.
 
-![workflow comparison](double-workflow-explanation.png)
+![workflow comparison](./assets/double-workflow-explanation.png)
 
 
 ### How does it work?
