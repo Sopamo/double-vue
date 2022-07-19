@@ -11,9 +11,7 @@
     RC planned for Q4 / 2022
     <br />
     <br />
-    <a href="https://github.com/Sopamo/double-vue/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Sopamo/double-vue/discussions">Give Feedback</a>
+    <a href="https://github.com/Sopamo/double-demo">Try the demo project</a>
   </p>
 </div>
 
@@ -102,6 +100,17 @@ return new class {
 ```
 
 Yep, that's it! No need to write any API boilerplate code. All methods from the PHP file are intelligently mapped to your frontend code. Read on to discover more complex usage examples.
+
+## Demo
+Before you start to use double in your own project, you can try out the demo project: 
+
+[Open demo repository](https://github.com/Sopamo/double-demo)
+
+The double demo is a dockerized Laravel application (using Laravel sail), so you can start to play with double in a few minutes.
+
+<br />
+<br />
+<br />
 
 ## Installation
 
