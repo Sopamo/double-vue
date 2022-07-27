@@ -136,7 +136,7 @@ To get a local copy up and running follow these simple example steps.
          installDouble('http://localhost/api/double', 'webpack')
          ``` 
          Make sure to replace `localhost` with the domain that your laravel project is running at
-      4. Add this `vue.config.js` file:
+      4. Add this `vue.config.js` file to the root of the double folder:
           ```js
           const { defineConfig } = require('@vue/cli-service')
           const { doubleWebpackPlugin } = require('double-vue/bundler')
@@ -167,7 +167,8 @@ To get a local copy up and running follow these simple example steps.
         <users />
       </suspense>
       ```
-
+### **Questions?**
+If any of the steps above are unclear, you can have a look at the [demo project](https://github.com/Sopamo/double-demo) or open a [discussion](https://github.com/Sopamo/double-vue/discussions)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -260,9 +261,8 @@ setCustomHeader('Authorization', 'Bearer ' + yourToken)
 
 ## Roadmap
 
-- [ ] Create a screencast
 - [ ] PHPStorm setup instructions
-- [ ] Configure double-vue api endpoint via .env
+- [x] Create a screencast
 - [x] Finalize readme
 - [x] Add support to configure the data requests in pinia
 - [x] Finalize the example project
