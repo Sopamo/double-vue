@@ -6,6 +6,8 @@ import { computed, reactive, Ref, watch } from "vue";
 import { doubleTypes } from "../../dev-types";
 import { getApiMap, useDouble } from "../double/useDouble";
 
+const stores: Record<keyof doubleTypes, any> = {}
+
 export function defineDoublePiniaStore<
     Path extends keyof doubleTypes,
     Id extends string,
@@ -20,6 +22,10 @@ export function defineDoublePiniaStore<
 >> {
     return () => {
         return new Promise((resolve, reject) => {
+            if(stores[path] !== undefined) {
+                resolve(stores[path])
+                return
+            }
             injectDouble(path, options).then(({storeOptions, config}) => {
                 // @ts-ignore
                 const id: Id = path
@@ -34,6 +40,7 @@ export function defineDoublePiniaStore<
                         })
                     })
                 }
+                stores[path] = store
                 resolve(store)
             }).catch((e) => {
                 throw e
