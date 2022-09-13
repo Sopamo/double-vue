@@ -57,6 +57,7 @@ export const loadData = async <Path extends keyof doubleTypes>(path: Path, confi
     assureBackendPath()
     const res = await fetch(`${backendPath}/data?path=${encodeURIComponent(path)}`, {
         method: 'POST',
+        credentials: "include",
         headers: getHeaders(),
         body: JSON.stringify({ config: deepUnref(config) })
     })
@@ -67,6 +68,7 @@ export const callAction = async <Path extends keyof doubleTypes>(path: Path, met
     assureBackendPath()
     const res = await fetch(`${backendPath}/action?path=${encodeURIComponent(path)}&method=${encodeURIComponent(method)}`, {
         method: 'POST',
+        credentials: "include",
         headers: getHeaders(),
         body: JSON.stringify(deepUnref(data))
     })
