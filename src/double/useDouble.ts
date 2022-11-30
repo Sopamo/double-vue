@@ -1,92 +1,76 @@
-import {reactive, ref, watch, isRef } from "vue"
+import {reactive, ref, watch, isRef, Ref} from "vue"
 
-import { callAction, loadData } from "./api";
-import { doubleTypes } from "../../dev-types";
-import { getBundler } from "./bundler";
+import {callAction, loadData} from "./api";
+import {doubleTypes} from "../../dev-types";
+import {getBundler} from "./bundler";
 
-export async function useDouble<Path extends keyof doubleTypes>(path: Path, config: Record<string, any> = {}):
-    Promise<
-        doubleTypes[Path]['state'] &
-        doubleTypes[Path]['actions'] &
-        { isLoading: doubleTypes[Path]['isLoading'] } &
-        { refresh: () => Promise<void> }
-    > {
-    // To be able to watch the config it has to be a ref
-    if(!isRef(config)) {
-        config = ref(config)
+export function useDouble<Path extends keyof doubleTypes>(path: Path, apiMap: any, config: Record<string, any> = {}):
+  doubleTypes[Path]['state'] &
+  doubleTypes[Path]['actions'] &
+  {
+    initialDataLoaded: Ref<boolean>
+    isLoading: doubleTypes[Path]['isLoading']
+    refresh: () => Promise<void>
+  } {
+  // To be able to watch the config it has to be a ref
+  if (!isRef(config)) {
+    config = ref(config)
+  }
+
+  const loadDoubleData = async () => {
+    return await loadData(path, config)
+  }
+  let returnValue = null
+  const returnData = {
+    isLoading: {},
+    initialDataLoaded: false,
+    refresh: async () => {
+      setData(await loadDoubleData())
     }
+  }
 
-    const loadInitialDoubleData = async () => {
-        return await loadData(path, config)
+  apiMap.getters.forEach(entry => {
+    if (returnData[entry] !== undefined) {
+      throw new Error('You can\'t use the getter name ' + entry + ' because it\'s already defined on this double instance.')
     }
-    let data = {} as any
+    returnData[entry] = null
+  })
+  apiMap.actions.forEach(method => {
+    if (returnData[method] !== undefined) {
+      throw new Error('You can\'t use the action name ' + method + ' because it\'s already defined on this double instance.')
+    }
+    returnData.isLoading[method] = false
+    returnData[method] = async function (data: Record<string, unknown>) {
+      returnValue.isLoading[method] = true
+      let result = null
+      try {
+        result = await callAction(path, method, data)
+      } catch (e) {
+        throw e
+      } finally {
+        returnValue.isLoading[method] = false
+      }
+      return result
+    }
+  })
 
-    const apiMap = await getApiMap(path)
-
-    apiMap.getters.forEach(entry => {
-        data[entry] = ref(null)
+  const setData = (newData) => {
+    Object.entries(newData).forEach(([key, value]) => {
+      returnValue[key] = value
     })
-    const setData = (newData) => {
-        Object.entries(newData).forEach(([key, value]) => {
-            if(data[key] === undefined) {
-                data[key] = ref(value)
-            } else {
-                data[key].value = value
-            }
-        })
-    }
-    setData(await loadInitialDoubleData())
+  }
 
-    const isLoading = reactive<Record<string, boolean>>({})
+  // TODO: Only re-request the entrypoints where their config has actually changed
+  watch(config, async () => {
+    setData(await loadDoubleData())
+  }, {
+    deep: true,
+  })
 
-    // TODO: Only re-request the entrypoints where their config has actually changed
-    watch(config, async () => {
-        setData(await loadInitialDoubleData())
-    }, {
-        deep: true,
-    })
+  returnData.refresh().then(() => {
+    returnValue.initialDataLoaded = true
+  })
+  returnValue = reactive(returnData)
 
-    const actions = {}
-    apiMap.actions.forEach(method => {
-        isLoading[method] = false
-        actions[method] = async function(data: Record<string, unknown>) {
-            isLoading[method] = true
-            let result = null
-            try {
-                result = await callAction(path, method, data)
-                isLoading[method] = false
-            } catch (e) {
-                isLoading[method] = false
-                throw e
-            }
-            return result
-        }
-    })
-
-    const refresh = async () => {
-        setData(await loadInitialDoubleData())
-    }
-
-    return {
-        ...data,
-        ...actions,
-        isLoading,
-        refresh,
-    }
-}
-
-export async function getApiMap(path: string): Promise<{ getters: string[], actions: string[] }> {
-    let apiMap = null
-    if(getBundler() === 'webpack') {
-        // Webpack can't dynamically import files from the root folder, so we have to remove the mandatory /src/ prefix
-        // because we need it to be hardcodet in the import call.
-        path = path.replace(/^\/?src\//, '')
-        apiMap = (await import(/* webpackPreload: true */ '/src/' + path + '.php')).default
-    } else {
-        apiMap = (await import(/* @vite-ignore */ path + '.php')).default
-    }
-    if(!apiMap) {
-        console.error(`Could not fetch the ${path}.php file. Try restarting your dev server.`)
-    }
-    return apiMap
+  return returnValue
 }

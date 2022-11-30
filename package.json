@@ -1,10 +1,11 @@
 {
   "name": "double-vue",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "The vue part of double",
   "type": "module",
   "scripts": {
     "build": "tsup && node ./postBuildCleanup.js",
+    "watch": "tsup --watch",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -45,16 +46,16 @@
   },
   "homepage": "https://github.com/Sopamo/double-vue#readme",
   "dependencies": {
+    "@nuxt/kit": "^3.0.0",
     "php-parser": "^3.0.3",
     "unplugin": "^0.3.1"
   },
   "peerDependencies": {
-    "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
     "pinia": "^2.0.9",
     "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
-    "@nuxt/kit-edge": {
+    "@nuxt/kit": {
       "optional": true
     },
     "pinia": {
@@ -62,7 +63,7 @@
     }
   },
   "devDependencies": {
-    "@nuxt/kit-edge": "^3.0.0-27373619.4728fd5",
+    "@nuxt/schema": "^3.0.0",
     "@types/node": "^18.0.0",
     "@vitejs/plugin-vue": "^2.0.1",
     "assert": "^2.0.0",

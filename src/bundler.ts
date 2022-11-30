@@ -1,1 +1,1 @@
-export { doubleRollupPlugin, doubleVitePlugin, doubleWebpackPlugin } from "./bundler/plugins"
+export { doubleVitePlugin, doubleWebpackPlugin } from "./bundler/plugins"
